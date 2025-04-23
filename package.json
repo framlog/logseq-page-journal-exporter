@@ -1,0 +1,23 @@
+{
+  "name": "logseq-page-journal-exporter",
+  "version": "0.0.1",
+  "author": "Huxley Hu",
+  "description": "📖 Export your Logseq pages and journals to Markdown files",
+  "license": "MIT",
+  "devDependencies": {
+    "@logseq/libs": "^0.0.17",
+    "parcel": "^2.14"
+  },
+  "browserslist": [
+    "chrome 80"
+  ],
+  "logseq": {
+    "id": "logseq-page-journal-exporter",
+    "icon": "logseq.png",
+    "main": "dist/index.html"
+  },
+  "scripts": {
+    "dev": "parcel ./index.html --public-url ./",
+    "build": "parcel build --public-url . --no-source-maps index.html"
+  }
+}
