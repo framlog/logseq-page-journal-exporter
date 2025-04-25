@@ -69,16 +69,31 @@ async function buildMd(page: string) {
   let md_content = pageBlocks.map(block => buildMdBlock(block)).join('\n')
 
   // Add a separator and the "Backlog" section header.
-  md_content += '----\n' // Horizontal rule
+  md_content += '\n----\n' // Horizontal rule
   md_content += '## Backlog\n'
 
   // Process the filtered journal blocks to append their content.
   md_content += journalBlocks.map(blocks => {
     // `blocks` is a tuple: [JournalPageEntity, ArrayOfBlocksFromThatJournal]
-    const [header, journals] = blocks
+    const [header, journals]: [PageEntity, BlockEntity[]] = blocks
+    let refs: Record<string, BlockEntity> = {}
+    for (const block of journals) {
+      refs[block.id] = block;
+    }
+    let roots = [];
+    for (const block of journals) {
+      if (block.parent.id == header.id) {
+        roots.push(block);
+        continue;
+      }
+      if (!Array.isArray(refs[block.parent.id].children)) {
+        refs[block.parent.id].children = [];
+      }
+      refs[block.parent.id].children!.push(block);
+    }
 
     // Format the blocks found on each journal page.
-    let md_journals = journals.map(block => {
+    let md_journals = roots.map(block => {
       // Remove links (direct or tagged) to the current page.
       // Example: `[[Page Name]]` or `#[[Page Name]]` are removed.
       block.content = block.content.replace(`#[[${page}]]`, '').replace(`[[${page}]]`, '').trim()
