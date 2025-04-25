@@ -82,7 +82,7 @@ async function buildMd(page: string) {
     }
     let roots = [];
     for (const block of journals) {
-      if (block.parent.id == header.id) {
+      if (block.parent.id == header.id || !refs[block.parent.id]) {
         roots.push(block);
         continue;
       }
@@ -111,7 +111,7 @@ async function buildMd(page: string) {
     return `**${date}**\n${md_journals}`
   }).join('\n') // Join the formatted sections from *different* journal pages.
 
-  console.log(md_content)
+  console.log(md_content);
   // Copy to clipboard.
   // await navigator.clipboard.writeText(md_content)
 }
