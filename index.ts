@@ -111,9 +111,10 @@ async function buildMd(page: string) {
     return `**${date}**\n${md_journals}`
   }).join('\n') // Join the formatted sections from *different* journal pages.
 
-  console.log(md_content);
+  // necessary to have the window focused in order to access the clipboard
+  window.focus();
   // Copy to clipboard.
-  // await navigator.clipboard.writeText(md_content)
+  await navigator.clipboard.writeText(md_content)
 }
 
 /**
