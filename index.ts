@@ -115,6 +115,8 @@ async function buildMd(page: string) {
   window.focus();
   // Copy to clipboard.
   await navigator.clipboard.writeText(md_content)
+  // Show success message
+  logseq.UI.showMsg('Content copied to clipboard!', 'success')
 }
 
 /**
